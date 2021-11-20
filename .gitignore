@@ -1,5 +1,8 @@
 # secrets
 
+# Mac cache
+.DS_Store
+
 # Logs
 logs
 *.log
