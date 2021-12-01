@@ -2,57 +2,38 @@ import React from "react";
 import styled from "styled-components";
 import { NFTCard, NftPhoto } from "./components/NFTCard";
 import { NFTModal } from "./components/NFTModal";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
+import { connect } from "./helpers";
 
 const axios = require('axios');
 
 function App() {
+  
+  let initialNfts = [
+    { name: "Mario", symbol: "SMWC", copies: 10, image: "https://via.placeholder.com/150" },
+    { name: "Luigi", symbol: "SMWC", copies: 10, image: "https://via.placeholder.com/150" },
+    { name: "Yoshi", symbol: "SMWC", copies: 10, image: "https://via.placeholder.com/150" },
+    { name: "Donkey Kong", symbol: "SMWC", copies: 10, image: "https://via.placeholder.com/150" },
+    { name: "Mario", symbol: "SMWC", copies: 10, image: "https://via.placeholder.com/150" },
+    { name: "Luigi", symbol: "SMWC", copies: 10, image: "https://via.placeholder.com/150" },
+    { name: "Yoshi", symbol: "SMWC", copies: 10, image: "https://via.placeholder.com/150" },
+    { name: "Donkey Kong", symbol: "SMWC", copies: 10, image: "https://via.placeholder.com/150" },
+  ];
 
   const [showModal, setShowModal] = useState(false);
   const [selectedNft, setSelectedNft] = useState();
   const [nfts, setNfts] = useState(initialNfts);
-  // let nft = { name: "Mario", symbol: "SMWC", copies: 10, image: "https://nftimage.com/XXX/" };
 
 
-  let initialNfts = [
-    {
-      name: "Mario",
-      symbol: "SMWC",
-      copies: 10,
-      image: "https://nftimage.com/XXX/",
-    },
-    {
-      name: "Luigi",
-      symbol: "SMWC",
-      copies: 10,
-      image: "https://nftimage.com/XXX/",
-    },
-    {
-      name: "Yoshi",
-      symbol: "SMWC",
-      copies: 10,
-      image: "https://nftimage.com/XXX/",
-    },
-    {
-      name: "Donkey Kong",
-      symbol: "SMWC",
-      copies: 10,
-      image: "https://nftimage.com/XXX/",
-    },
-    {
-      name: "Yoshi",
-      symbol: "SMWC",
-      copies: 10,
-      image: "https://nftimage.com/XXX/",
-    },
-    {
-      name: "Donkey Kong",
-      symbol: "SMWC",
-      copies: 10,
-      image: "https://nftimage.com/XXX/",
-    },
-  ];
+  useEffect( () => {
+     ( async () => {
+        const address = await connect();
+        if (address) {
+          getNfts(address)
+        }
+      })()
+    }, []);
 
   const toggleModal = (i) => {
     if(i >= 0) {
@@ -72,7 +53,7 @@ function App() {
     
     let abi = [
       "function symbol() public view returns(string memory)",
-      "function tokenCount() public view returns(uiint256)",
+      "function tokenCount() public view returns(uint256)",
       "function uri(uint256 _tokenId) public view returns(string memory)",
       "function balanceOfBatch(address[], accounts, uint256[] ids) public view returns(uint256 array)"
     ];
